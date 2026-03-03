@@ -2,7 +2,7 @@
 """
 Weekly Preview Builder - Fetch Fastmoss data, download assets, generate HTML.
 """
-import os, sys, json, time, random, string, html, re, urllib.request, urllib.error, ssl
+import os, sys, json, time, random, string, html, re, urllib.request, urllib.error, ssl, argparse
 
 # --- Config ---
 PRODUCT_IDS = [
@@ -202,7 +202,10 @@ def esc(s):
     return html.escape(str(s)) if s else ''
 
 # ========== MAIN ==========
-def main():
+def main(deploy=False):
+    deploy_mode = deploy
+    if deploy_mode:
+        print("DEPLOY MODE: Fastmoss links excluded")
     products = []
     vcover_idx = 0
 
@@ -297,7 +300,7 @@ def main():
               <div class='links'>
                 <a class='btnlink' href='https://shop.tiktok.com/view/product/{pid}' target='_blank' rel='noreferrer noopener'>TikTok</a>
                 <button class='btnlink copyBtn' type='button' data-copy='https://shop.tiktok.com/view/product/{pid}'>Copy link</button>
-                <a class='btnlink ghost' href='https://www.fastmoss.com/en/e-commerce/detail/{pid}' target='_blank' rel='noreferrer noopener'>Fastmoss</a>
+                {f"<a class='btnlink ghost' href='https://www.fastmoss.com/en/e-commerce/detail/{pid}' target='_blank' rel='noreferrer noopener'>Fastmoss</a>" if not deploy_mode else ""}
                 <span class='linkHint'>If TikTok doesn't open, copy &amp; paste into Safari/Chrome.</span>
               </div>
             </div>
@@ -482,4 +485,7 @@ button.btnlink{{cursor:pointer;}}
     print("DONE!")
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--deploy', action='store_true', help='Deploy mode: exclude Fastmoss links')
+    args = parser.parse_args()
+    main(deploy=args.deploy)
