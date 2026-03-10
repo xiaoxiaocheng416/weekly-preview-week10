@@ -3,21 +3,27 @@
 Weekly Preview Builder - Fetch Fastmoss data, download assets, generate HTML.
 """
 import os, sys, json, time, random, string, html, re, urllib.request, urllib.error, ssl, argparse
+from datetime import datetime
 
 # --- Config ---
 PRODUCT_IDS = [
-    # 早期仓位
-    "1729481318832247979",  # COSRX PDRN 眼膜
-    "1732243946083160091",  # Dr.Melaxin 姜黄酸爽肤棉
-    "1732265867381740340",  # Lassi Lips 唇线笔
-    "1732271500056563740",  # Khadlaj Angel Dust 香水
-    # 稳健仓位
-    "1732157257719255067",  # Dr.Melaxin Cactox 紧致套装
-    "1731832307922407544",  # SKINTIFIC 唇部精华
-    "1729414752134665015",  # ONE/SIZE 粉底
+    # 已确认保留
+    "1732269507528855787",  # medicube PDRN Eye Patch
+    "1732232315973571319",  # NIDA Invisible Fit Sunscreen
+    "1731988034100695960",  # Hanpo Herbal Patch
+    "1731847951163953949",  # Lilyeve Hair Growth Serum
+    # 稳定日销补充
+    "1731893022493348075",  # medicube No Cast Just Glow Collagen Sunscreen
+    "1732133297298182171",  # Dr.Melaxin CACTOX V-LIFTING MEWING BAND
+    "1731252369156444451",  # e.l.f. Halo Glow Skin Tint SPF 50
+    "1729632395866510135",  # ONE SIZE Turn Up The Base Foundation
+    "1729412010027750270",  # Beauty by Earth Self Tanner Body Lotion
 ]
 
-COOKIE = "utm_country=US; utm_south=google; utm_id=ggfm; fp_visid=d255ef2a57ae6663cd6cf41a082770bb; _fbp=fb.1.1769014070516.564171598931847573; HMACCOUNT=ACF71010138D9EF7; userTimeZone=America%2FNew_York; _rdt_uuid=1770384030361.1a217c6d-7378-4a7b-a960-f1d5315e75b6; _gcl_au=1.1.117127969.1770384030; _ga=GA1.1.259614830.1770384030; gg_client_id=259614830.1770384030; _tt_enable_cookie=1; _ttp=01KGSHRYS3TBGQFW40NERQV5V1_.tt.1; NEXT_LOCALE=zh; region=US; Hm_lvt_6ada669245fc6950ae4a2c0a86931766=1771953768; _clck=1s4ab9i%5E2%5Eg41%5E0%5E2050; fd_tk=e03d9a9f5701c482f541a1feecef9cb2; Hm_lpvt_6ada669245fc6950ae4a2c0a86931766=1772560149; _uetsid=537fe970167c11f18cda2bb4e87abd0f|eidr5t|2|g41|0|2252; _clsk=173q176%5E1772562600278%5E4%5E0%5Ewww.clarity.ms%2Feus2-c%2Fcollect; _uetvid=f4837ee077b311f09655af1eeb5ff6a0|1b6t2ar|1772562600582|4|1|bat.bing.com/p/insights/c/a"
+COOKIE = os.getenv(
+    "FASTMOSS_COOKIE",
+    "utm_country=US; utm_south=google; utm_id=ggfm; fp_visid=d255ef2a57ae6663cd6cf41a082770bb; _fbp=fb.1.1769014070516.564171598931847573; HMACCOUNT=ACF71010138D9EF7; userTimeZone=America%2FNew_York; _gcl_au=1.1.117127969.1770384030; _ga=GA1.1.259614830.1770384030; gg_client_id=259614830.1770384030; _tt_enable_cookie=1; _ttp=01KGSHRYS3TBGQFW40NERQV5V1_.tt.1; region=US; Hm_lvt_6ada669245fc6950ae4a2c0a86931766=1771953768; gray_new_layout=1; use_new_layout=1; _rdt_uuid=1770384030361.1a217c6d-7378-4a7b-a960-f1d5315e75b6; ttcsid_CJMMQFRC77U1G7J3JGP0=1772568065922::NSlcFhdmZZUuKBfjcNQW.3.1772568065922.0; ttcsid=1772568065922::Qb-jhImFxjCcX22PVE2P.3.1772568065924.0; ttcsid_CJOP1H3C77UDO397C3M0=1772568065922::1qYIj6IrO386GY8yNI0y.3.1772568065924.0; _rdt_pn=:200~94bc6c49804485e6b3c689e9be8e986ba46155c316e348d94b6eda9fc07cba1d|200~e5b7fdd98540701505a34311c0b414624158d916de5a7b65080a1ea49b4ead4a|200~50008587afdba5ac97f91ba99ee79641b9cd54312feddd0758614e32dffad26f|200~89aa48e25dfc2711089007ffe999b8d8f16bdd70cf9dd5de72214414a901e84f|200~e8a49c611b53c65de2aac639cd05a7da665301cd1da30b6a950f0ffe38d25b4a; _ga_GD8ST04HB5=GS2.1.s1772580430$o4$g1$t1772580434$j56$l0$h863429639; NEXT_LOCALE=zh; _clck=1s4ab9i%5E2%5Eg48%5E0%5E2050; fd_tk=f3bc4a1c1aa31663a5a555f9d1958a26; _uetsid=537fe970167c11f18cda2bb4e87abd0f|eidr5t|2|g48|0|2252; _clsk=bs8q4t%5E1773178672421%5E25%5E1%5Ewww.clarity.ms%2Feus2-c%2Fcollect; _uetvid=f4837ee077b311f09655af1eeb5ff6a0|cyjj4a|1773178672642|39|1|bat.bing.com/p/insights/c/y; Hm_lpvt_6ada669245fc6950ae4a2c0a86931766=1773178673",
+)
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
@@ -26,7 +32,7 @@ HEADERS = {
     'lang': 'ZH_CN',
     'region': 'US',
     'source': 'pc',
-    'fm-sign': '8f3009ade0161bcbcf0ce660b54804eb',
+    'fm-sign': os.getenv('FASTMOSS_FM_SIGN', '734d3be0905e22a4d9bca7c33bb333a6'),
     'Cookie': COOKIE,
 }
 
@@ -77,6 +83,21 @@ def download_image(url, dest):
             time.sleep(1)
     return False
 
+def reset_generated_assets():
+    """Remove previously generated assets so preview never reuses stale images."""
+    for folder, pattern in (
+        (IMG_DIR, r"^prod_.*\.(jpg|jpeg|png)$"),
+        (VCOVER_DIR, r"^cover_.*\.(jpg|jpeg|png)$"),
+        (CHART_DIR, r".*\.svg$"),
+    ):
+        os.makedirs(folder, exist_ok=True)
+        for name in os.listdir(folder):
+            if re.match(pattern, name, re.IGNORECASE):
+                try:
+                    os.remove(os.path.join(folder, name))
+                except OSError:
+                    pass
+
 def fetch_product_base(pid):
     """Fetch product basic info."""
     ts = str(int(time.time()))
@@ -112,7 +133,7 @@ def fetch_product_overview(pid, d_type=28):
 def fetch_product_videos(pid):
     """Fetch top 3 videos for product."""
     ts = str(int(time.time()))
-    url = f"https://www.fastmoss.com/api/goods/v3/video?product_id={pid}&page=1&pagesize=3&order=2,2&d_type=0&is_promoted=-1&date_type=28&_time={ts}&cnonce={cnonce()}"
+    url = f"https://www.fastmoss.com/api/goods/v3/video?page=1&product_id={pid}&order=1,2&d_type=0&pagesize=5&is_promoted=-1&date_type=28&_time={ts}&cnonce={cnonce()}"
     data = api_get(url, pid)
     if not data:
         return []
@@ -206,11 +227,13 @@ def main(deploy=False):
     deploy_mode = deploy
     if deploy_mode:
         print("DEPLOY MODE: Fastmoss links excluded")
+    reset_generated_assets()
     products = []
     vcover_idx = 0
 
+    total_products = len(PRODUCT_IDS)
     for idx, pid in enumerate(PRODUCT_IDS, 1):
-        print(f"\n[{idx}/15] Fetching product {pid}...")
+        print(f"\n[{idx}/{total_products}] Fetching product {pid}...")
 
         base = fetch_product_base(pid)
         if not base:
@@ -220,7 +243,7 @@ def main(deploy=False):
         print(f"  Title: {base['title'][:60]}...")
         print(f"  Rating: {base['rating']}, Commission: {base['commission']}%, Sold: {base['sold_count']}")
 
-        prod_img = f"prod_{idx:02d}.jpg"
+        prod_img = f"prod_{pid}.jpg"
         prod_img_path = os.path.join(IMG_DIR, prod_img)
         if base['cover']:
             ok = download_image(base['cover'], prod_img_path)
@@ -239,7 +262,8 @@ def main(deploy=False):
 
         for vi, v in enumerate(videos):
             vcover_idx += 1
-            vcover_file = f"cover_{vcover_idx:02d}.jpg"
+            video_id = str(v.get('video_id') or f"{idx}_{vi}_{vcover_idx}")
+            vcover_file = f"cover_{pid}_{video_id}.jpg"
             vcover_path = os.path.join(VCOVER_DIR, vcover_file)
             if v['cover']:
                 download_image(v['cover'], vcover_path)
@@ -316,12 +340,16 @@ def main(deploy=False):
 """
         cards_html.append(card)
 
+    pick_count = sum(1 for p in products if p is not None)
+    generated_date = datetime.now().strftime("%b %d, %Y").replace(" 0", " ")
+    mode_label = "Deploy" if deploy_mode else "Preview"
+
     page = f"""<!doctype html>
 <html lang='en'>
 <head>
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Weekly Preview - Week 10 (Mar 3, 2026)</title>
+<title>Growth Picks Dashboard</title>
 <style>
 :root{{--bg:#f6f7fb;--panel:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--accent:#2563eb;--shadow:0 1px 2px rgba(15,23,42,.06),0 10px 25px rgba(15,23,42,.06);}}
 body{{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}}
@@ -386,7 +414,7 @@ button.btnlink{{cursor:pointer;}}
 <body>
 <header><div class='wrap'>
   <h1>Growth Picks Dashboard</h1>
-  <div class='subttl'>Week 10 · Mar 3, 2026 · 7 picks</div>
+  <div class='subttl'>{mode_label} · {generated_date} · {pick_count} picks</div>
 </div></header>
 
 <div class='wrap'>
@@ -448,7 +476,7 @@ button.btnlink{{cursor:pointer;}}
     print("SELF-CHECK")
     print("="*50)
     ok_count = sum(1 for p in products if p is not None)
-    print(f"Cards generated: {ok_count}/15")
+    print(f"Cards generated: {ok_count}/{total_products}")
     prod_imgs = [f for f in os.listdir(IMG_DIR) if f.startswith('prod_')]
     print(f"Product images: {len(prod_imgs)}")
     vcovers = [f for f in os.listdir(VCOVER_DIR) if f.startswith('cover_')]
