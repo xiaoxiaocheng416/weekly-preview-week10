@@ -842,6 +842,21 @@ p {
   line-height: 1.35;
 }
 
+.script-template {
+  max-height: 720px;
+  overflow: auto;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  background: #211911;
+  color: #fff8e6;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
 .section-head {
   display: flex;
   gap: 14px;

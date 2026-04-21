@@ -126,6 +126,148 @@ const skitSkeletonBeats = [
   }
 ];
 
+const skitTemplateText = `01 Callout
+
+A:
+No wonder your (skin problem) still looks so (negative skin word).
+
+B:
+My (skin problem)?
+
+A:
+Yeah.
+
+It looks (negative skin word).
+
+
+02 Defensive reaction
+
+B:
+What do you mean?
+
+
+03 Existing habit defense
+
+B:
+I've literally been doing the (viral DIY trend) thing.
+
+Am I not supposed to put (raw ingredient 1) and (raw ingredient 2) on my face?
+
+
+04 Old solution attack
+
+A:
+With actual (raw ingredient 1)?
+
+B:
+Yeah.
+
+That's what everyone is doing.
+
+A:
+I mean, you can.
+
+But if you're waiting for that to make your skin look (desired result) today...
+
+that's gonna take forever.
+
+
+05 Proof old solution fails
+
+B:
+Why?
+
+Everyone says (raw ingredient) is like (viral comparison).
+
+A:
+Yeah, but look.
+
+It's just (old solution visual failure).
+
+You're not getting that (desired result) look from this.
+
+
+06 Curiosity gap
+
+B:
+Wait.
+
+So there's a better way to do the (viral DIY trend) thing?
+
+
+07 Product reveal
+
+A:
+Yeah.
+
+Try this.
+
+
+08 Product identity + simple mechanism
+
+B:
+What is this?
+
+A:
+MUMUKI Honey Banana BDRN Ampoule.
+
+B:
+BDRN?
+
+A:
+Honey Banana PDRN with collagen.
+
+It's still the (ingredient story) idea.
+
+Just made into Korean skincare.
+
+
+09 Visible proof
+
+B:
+Wait.
+
+Why is it so (texture reaction)?
+
+A:
+That's the capsule texture.
+
+Rub it in.
+
+B:
+Oh wait.
+
+That actually looks (visible payoff).
+
+
+10 Benefit + CTA
+
+A:
+Exactly.
+
+That's the look you were trying to get from the (raw ingredient).
+
+B:
+Wait, where do I get this?
+
+A:
+I'll leave the link down below in the orange shopping cart.`;
+
+const skitSlotOptions = [
+  ["(skin problem)", "skin / face / glow / skin texture"],
+  ["(negative skin word)", "flat / dull / tired / dry / not glowy"],
+  ["(viral DIY trend)", "banana t0x / banana and honey mask / natural t0x thing"],
+  ["(raw ingredient 1)", "banana"],
+  ["(raw ingredient 2)", "honey"],
+  ["(raw ingredient)", "banana / banana peel / banana and honey"],
+  ["(desired result)", "plump / glowy / bouncy / glassy / lifted"],
+  ["(viral comparison)", "natural t0x / t0x / Korean glass skin / a glow mask"],
+  ["(old solution visual failure)", "sitting on your face / sliding around / making a mess / not absorbing / not giving you the glow"],
+  ["(ingredient story)", "banana and honey / banana t0x / natural t0x"],
+  ["(texture reaction)", "thick / bouncy / sticky / milky"],
+  ["(visible payoff)", "glowy / glossy / plump / juicy / glassy"]
+];
+
 function route() {
   const hash = window.location.hash || "#/";
   const path = hash.replace(/^#/, "");
@@ -495,6 +637,22 @@ function scriptSkitSkeletonCard(item) {
             ${skitSkeletonBeats.map((beat, index) => skitSkeletonBeat(beat, index)).join("")}
           </div>
         </section>
+
+        <section class="script-section">
+          <div class="section-head">
+            <p class="eyebrow">MUMUKI template</p>
+          </div>
+          <pre class="script-template"><code>${escapeHtml(skitTemplateText)}</code></pre>
+        </section>
+
+        <section class="script-section">
+          <div class="section-head">
+            <p class="eyebrow">Slot options</p>
+          </div>
+          <div class="slot-map-list">
+            ${skitSlotOptions.map((slot) => slotMapRow(slot)).join("")}
+          </div>
+        </section>
       </div>
     </article>
   `;
@@ -568,6 +726,15 @@ function detailRow(label, value) {
       ${content}
     </div>
   `;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function refreshTikTokEmbed() {
