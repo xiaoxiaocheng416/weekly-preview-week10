@@ -442,14 +442,13 @@ function scriptIdeaCard(section) {
 
 function renderSkitScriptIdea() {
   app.innerHTML = `
-    <section class="page script-page">
+    <section class="page script-page script-detail-page">
       <a class="back-link" href="#/script-idea">← Back to Script Idea</a>
       <div class="page-header">
         <div>
-          <p class="eyebrow">Skit skeleton</p>
-          <h1>Old solution fails. Product gives proof.</h1>
+          <p class="eyebrow">Skit</p>
+          <h1>Skit Skeleton</h1>
         </div>
-        <p class="small-note">10 beats. No full script yet.</p>
       </div>
 
       ${scriptSkitSkeletonCard(lanceSkitSkeleton)}
@@ -488,16 +487,9 @@ function scriptSkitSkeletonCard(item) {
       </div>
 
       <div class="script-breakdown">
-        <div class="script-summary">
-          <p class="eyebrow">Core skeleton</p>
-          <h2>Call out the weak solution before you reveal the product.</h2>
-          <p>The reference works because the product does not show up first. The old habit fails first.</p>
-        </div>
-
         <section class="script-section">
           <div class="section-head">
             <p class="eyebrow">Original skeleton</p>
-            <strong>10 beats</strong>
           </div>
           <div class="beat-list">
             ${skitSkeletonBeats.map((beat, index) => skitSkeletonBeat(beat, index)).join("")}
