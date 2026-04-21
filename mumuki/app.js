@@ -52,24 +52,77 @@ const lanceSkitSkeleton = {
   ]
 };
 
-const creatorScriptAngles = [
+const scriptIdeaSections = [
   {
-    title: "Raw banana is viral, but it is not skincare",
-    hook: "Show banana or honey on the face.",
-    reveal: "Say: “This gets attention, but raw banana is not formulated skincare.”",
-    proof: "Reveal MUMUKI as Honey Banana BDRN + collagen, then show the texture."
+    title: "Skit",
+    count: "1 skeleton",
+    href: "#/script-idea/skit",
+    note: "Two-person setup. Old solution fails. Product reveal gives proof."
   },
   {
-    title: "Good ingredient idea, weak raw version",
-    hook: "Show banana or honey directly on skin.",
-    reveal: "Say: “The idea makes sense. The raw version is the weak part.”",
-    proof: "Position MUMUKI as the BDRN + collagen ampoule version of that idea."
+    title: "Talking Head 01",
+    count: "coming next",
+    href: "#/script-idea/talking-head-01",
+    note: "Creator explains the angle directly."
   },
   {
-    title: "Ingredient story hooks. Glow sells.",
-    hook: "Start close with dropper texture.",
-    reveal: "Say: “BDRN is Honey Banana PDRN + collagen.”",
-    proof: "End on plumper-looking skin, firmer-looking skin, or glass glow."
+    title: "Talking Head 02",
+    count: "coming next",
+    href: "#/script-idea/talking-head-02",
+    note: "Creator uses proof and product logic."
+  }
+];
+
+const skitSkeletonBeats = [
+  {
+    title: "Callout",
+    original: "No wonder your breath stinks so bad.",
+    meaning: "Start with a direct problem callout."
+  },
+  {
+    title: "Defensive reaction",
+    original: "My breath stinks?",
+    meaning: "Let the other person push back."
+  },
+  {
+    title: "Existing habit defense",
+    original: "Am I not supposed to rinse my mouth out with mouthwash?",
+    meaning: "They explain the thing they already do."
+  },
+  {
+    title: "Old solution attack",
+    original: "You're using American mouthwash. That does nothing for you.",
+    meaning: "Attack the current solution, not the person."
+  },
+  {
+    title: "Proof old solution fails",
+    original: "Look, as you spit, nothing comes out.",
+    meaning: "Show why the old solution is weak."
+  },
+  {
+    title: "Curiosity gap",
+    original: "Wait, there's something that's supposed to come out?",
+    meaning: "Create the gap before showing the product."
+  },
+  {
+    title: "Product reveal",
+    original: "Yes. Try this.",
+    meaning: "Only reveal the product after the viewer understands the gap."
+  },
+  {
+    title: "Simple mechanism",
+    original: "It actually pulls that gunk and dirt out of your mouth.",
+    meaning: "Explain the mechanism in one plain sentence."
+  },
+  {
+    title: "Visible proof",
+    original: "Ew. Oh my gosh. You see that?",
+    meaning: "The result has to be visible on camera."
+  },
+  {
+    title: "Benefit + CTA",
+    original: "My breath smells so much better. Link in the orange cart.",
+    meaning: "Close with the benefit and buying path."
   }
 ];
 
@@ -85,6 +138,10 @@ function route() {
     renderReferenceVideo();
   } else if (path === "/visual-hook-bank" || path === "/visual-hook-grouping") {
     renderVisualHookGrouping();
+  } else if (path === "/script-idea/skit") {
+    renderSkitScriptIdea();
+  } else if (path.startsWith("/script-idea/talking-head")) {
+    renderComingSoonScriptIdea(path);
   } else if (path === "/script-idea") {
     renderScriptIdea();
   } else {
@@ -362,16 +419,61 @@ function renderScriptIdea() {
           <h1>Script Idea</h1>
         </div>
         <p class="small-note">
-          Pick one angle. Do not mix everything.
+          Pick a format first. Then write the script.
         </p>
       </div>
 
-      ${scriptCreatorPlaybook(lanceSkitSkeleton)}
+      <div class="script-nav-grid">
+        ${scriptIdeaSections.map((section) => scriptIdeaCard(section)).join("")}
+      </div>
     </section>
   `;
 }
 
-function scriptCreatorPlaybook(item) {
+function scriptIdeaCard(section) {
+  return `
+    <a class="script-idea-card" href="${section.href}">
+      <p class="eyebrow">${section.count}</p>
+      <h2>${section.title}</h2>
+      <p>${section.note}</p>
+    </a>
+  `;
+}
+
+function renderSkitScriptIdea() {
+  app.innerHTML = `
+    <section class="page script-page">
+      <a class="back-link" href="#/script-idea">← Back to Script Idea</a>
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Skit skeleton</p>
+          <h1>Old solution fails. Product gives proof.</h1>
+        </div>
+        <p class="small-note">10 beats. No full script yet.</p>
+      </div>
+
+      ${scriptSkitSkeletonCard(lanceSkitSkeleton)}
+    </section>
+  `;
+}
+
+function renderComingSoonScriptIdea(path) {
+  const title = path.includes("02") ? "Talking Head 02" : "Talking Head 01";
+  app.innerHTML = `
+    <section class="page script-page">
+      <a class="back-link" href="#/script-idea">← Back to Script Idea</a>
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Script Idea</p>
+          <h1>${title}</h1>
+        </div>
+        <p class="small-note">We will build this after the skit skeleton is locked.</p>
+      </div>
+    </section>
+  `;
+}
+
+function scriptSkitSkeletonCard(item) {
   return `
     <article class="script-skeleton-card">
       <div class="script-reference-panel">
@@ -387,39 +489,18 @@ function scriptCreatorPlaybook(item) {
 
       <div class="script-breakdown">
         <div class="script-summary">
-          <p class="eyebrow">Creator version</p>
-          <h2>One video. One angle.</h2>
-          <p>Make the old solution look weak. Reveal MUMUKI. Show the finish.</p>
+          <p class="eyebrow">Core skeleton</p>
+          <h2>Call out the weak solution before you reveal the product.</h2>
+          <p>The reference works because the product does not show up first. The old habit fails first.</p>
         </div>
 
         <section class="script-section">
           <div class="section-head">
-            <p class="eyebrow">Controlled angles</p>
-            <strong>3 options only</strong>
+            <p class="eyebrow">Original skeleton</p>
+            <strong>10 beats</strong>
           </div>
-          <div class="creator-angle-grid">
-            ${creatorScriptAngles.map((angle, index) => creatorAngleCard(angle, index)).join("")}
-          </div>
-        </section>
-
-        <section class="script-section script-do-not">
-          <div class="section-head">
-            <p class="eyebrow">Keep it simple</p>
-            <strong>Do not add more angles</strong>
-          </div>
-          <div class="slot-map-list">
-            <div class="slot-map-row">
-              <strong>Do not</strong>
-              <p>Turn this into a long ingredient science video.</p>
-            </div>
-            <div class="slot-map-row">
-              <strong>Do not</strong>
-              <p>Talk about every benefit in one script.</p>
-            </div>
-            <div class="slot-map-row">
-              <strong>Do</strong>
-              <p>Pick one: raw banana is not skincare, raw ingredient is weak, or show the glow.</p>
-            </div>
+          <div class="beat-list">
+            ${skitSkeletonBeats.map((beat, index) => skitSkeletonBeat(beat, index)).join("")}
           </div>
         </section>
       </div>
@@ -427,22 +508,14 @@ function scriptCreatorPlaybook(item) {
   `;
 }
 
-function creatorAngleCard(angle, index) {
+function skitSkeletonBeat(beat, index) {
   return `
-    <div class="creator-angle-card">
-      <div class="angle-number">${String(index + 1).padStart(2, "0")}</div>
-      <h3>${angle.title}</h3>
-      <div class="angle-line">
-        <strong>Hook</strong>
-        <p>${angle.hook}</p>
-      </div>
-      <div class="angle-line">
-        <strong>Reveal</strong>
-        <p>${angle.reveal}</p>
-      </div>
-      <div class="angle-line">
-        <strong>Proof</strong>
-        <p>${angle.proof}</p>
+    <div class="beat-row skit-beat-row">
+      <span>${String(index + 1).padStart(2, "0")}</span>
+      <div>
+        <strong>${beat.title}</strong>
+        <p>${beat.original}</p>
+        <small>${beat.meaning}</small>
       </div>
     </div>
   `;
