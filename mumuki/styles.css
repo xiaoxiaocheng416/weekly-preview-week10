@@ -842,19 +842,32 @@ p {
   line-height: 1.35;
 }
 
-.script-template {
-  max-height: 720px;
-  overflow: auto;
-  margin: 0;
+.selling-card-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.selling-card {
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 20px;
   padding: 18px;
-  background: rgba(255, 253, 247, 0.92);
-  color: var(--ink);
-  font-family: "SFMono-Regular", Consolas, monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  white-space: pre-wrap;
+  background: rgba(255, 253, 247, 0.78);
+}
+
+.selling-card h3 {
+  margin-bottom: 12px;
+}
+
+.selling-card ul {
+  margin: 0;
+  padding-left: 19px;
+}
+
+.selling-card li {
+  margin: 8px 0;
+  color: var(--muted);
+  font-weight: 750;
+  line-height: 1.42;
 }
 
 .section-head {

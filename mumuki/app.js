@@ -126,146 +126,52 @@ const skitSkeletonBeats = [
   }
 ];
 
-const skitTemplateText = `01 Callout
-
-A:
-No wonder your (skin problem) still looks so (negative skin word).
-
-B:
-My (skin problem)?
-
-A:
-Yeah.
-
-It looks (negative skin word).
-
-
-02 Defensive reaction
-
-B:
-What do you mean?
-
-
-03 Existing habit defense
-
-B:
-I've literally been doing the (viral DIY trend) thing.
-
-Am I not supposed to put (raw ingredient 1) and (raw ingredient 2) on my face?
-
-
-04 Old solution attack
-
-A:
-With actual (raw ingredient 1)?
-
-B:
-Yeah.
-
-That's what everyone is doing.
-
-A:
-I mean, you can.
-
-But if you're waiting for that to make your skin look (desired result) today...
-
-that's gonna take forever.
-
-
-05 Proof old solution fails
-
-B:
-Why?
-
-Everyone says (raw ingredient) is like (viral comparison).
-
-A:
-Yeah, but look.
-
-It's just (old solution visual failure).
-
-You're not getting that (desired result) look from this.
-
-
-06 Curiosity gap
-
-B:
-Wait.
-
-So there's a better way to do the (viral DIY trend) thing?
-
-
-07 Product reveal
-
-A:
-Yeah.
-
-Try this.
-
-
-08 Product identity + simple mechanism
-
-B:
-What is this?
-
-A:
-MUMUKI Honey Banana BDRN Ampoule.
-
-B:
-BDRN?
-
-A:
-Honey Banana PDRN with collagen.
-
-It's still the (ingredient story) idea.
-
-Just made into Korean skincare.
-
-
-09 Visible proof
-
-B:
-Wait.
-
-Why is it so (texture reaction)?
-
-A:
-That's the capsule texture.
-
-Rub it in.
-
-B:
-Oh wait.
-
-That actually looks (visible payoff).
-
-
-10 Benefit + CTA
-
-A:
-Exactly.
-
-That's the look you were trying to get from the (raw ingredient).
-
-B:
-Wait, where do I get this?
-
-A:
-I'll leave the link down below in the orange shopping cart.`;
-
-const skitSlotOptions = [
-  ["(skin problem)", "skin / face / glow / skin texture"],
-  ["(negative skin word)", "flat / dull / tired / dry / not glowy"],
-  ["(viral DIY trend)", "banana t0x / banana and honey mask / natural t0x thing"],
-  ["(raw ingredient 1)", "banana"],
-  ["(raw ingredient 2)", "honey"],
-  ["(raw ingredient)", "banana / banana peel / banana and honey"],
-  ["(desired result)", "plump / glowy / bouncy / glassy / lifted"],
-  ["(viral comparison)", "natural t0x / t0x / Korean glass skin / a glow mask"],
-  ["(old solution visual failure)", "sitting on your face / sliding around / making a mess / not absorbing / not giving you the glow"],
-  ["(ingredient story)", "banana and honey / banana t0x / natural t0x"],
-  ["(texture reaction)", "thick / bouncy / sticky / milky"],
-  ["(visible payoff)", "glowy / glossy / plump / juicy / glassy"]
+const skitSellingCards = [
+  {
+    title: "What this skit is selling",
+    lines: [
+      "Viewer thinks their current solution is already doing the job.",
+      "Skit proves the current solution is weak.",
+      "Then product reveal feels earned.",
+      "MUMUKI version: banana t0x DIY gets attention, but raw banana / honey is slow, messy, or not giving fast glow."
+    ]
+  },
+  {
+    title: "Replaceable slots",
+    slots: [
+      ["Old problem", "bad breath → flat / dull / tired-looking skin"],
+      ["Old solution", "American mouthwash → raw banana / raw honey / banana t0x DIY"],
+      ["Old solution weakness", "nothing comes out → slow / messy / not giving instant glow"],
+      ["Product", "Japanese mouthwash → MUMUKI Honey Banana BDRN Ampoule"],
+      ["Mechanism", "pulls gunk out → Honey Banana PDRN + collagen in ampoule format"],
+      ["Visible proof", "gunk in cup → texture / spread / glow / plumper-looking finish"]
+    ]
+  },
+  {
+    title: "How to film the tension",
+    lines: [
+      "Person B is already using the DIY method: rubbing banana, dripping honey, or applying a banana-honey mask.",
+      "Person A interrupts and calls out the weak result.",
+      "Person B defends the trend.",
+      "Person A attacks the raw method, not the person.",
+      "Make the old method look weak.",
+      "Reveal MUMUKI.",
+      "Show capsule ampoule texture.",
+      "Rub it in.",
+      "Show glow / plump / glossy finish.",
+      "CTA to orange cart."
+    ]
+  },
+  {
+    title: "Do not change",
+    lines: [
+      "Do not start with the product.",
+      "Do not turn this into ingredient education.",
+      "Do not attack the viewer.",
+      "Do not say botx. Say t0x.",
+      "Pick one payoff: glow, plump, or glass skin."
+    ]
+  }
 ];
 
 function route() {
@@ -640,21 +546,24 @@ function scriptSkitSkeletonCard(item) {
 
         <section class="script-section">
           <div class="section-head">
-            <p class="eyebrow">MUMUKI template</p>
+            <p class="eyebrow">MUMUKI reconstruction</p>
           </div>
-          <pre class="script-template"><code>${escapeHtml(skitTemplateText)}</code></pre>
-        </section>
-
-        <section class="script-section">
-          <div class="section-head">
-            <p class="eyebrow">Slot options</p>
-          </div>
-          <div class="slot-map-list">
-            ${skitSlotOptions.map((slot) => slotMapRow(slot)).join("")}
+          <div class="selling-card-grid">
+            ${skitSellingCards.map((card) => sellingCard(card)).join("")}
           </div>
         </section>
       </div>
     </article>
+  `;
+}
+
+function sellingCard(card) {
+  return `
+    <div class="selling-card">
+      <h3>${card.title}</h3>
+      ${card.slots ? `<div class="slot-map-list">${card.slots.map((slot) => slotMapRow(slot)).join("")}</div>` : ""}
+      ${card.lines ? `<ul>${card.lines.map((line) => `<li>${line}</li>`).join("")}</ul>` : ""}
+    </div>
   `;
 }
 
@@ -726,15 +635,6 @@ function detailRow(label, value) {
       ${content}
     </div>
   `;
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 function refreshTikTokEmbed() {
