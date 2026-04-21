@@ -52,6 +52,27 @@ const lanceSkitSkeleton = {
   ]
 };
 
+const creatorScriptAngles = [
+  {
+    title: "Raw banana is viral, but it is not skincare",
+    hook: "Show banana or honey on the face.",
+    reveal: "Say: “This gets attention, but raw banana is not formulated skincare.”",
+    proof: "Reveal MUMUKI as Honey Banana BDRN + collagen, then show the texture."
+  },
+  {
+    title: "Good ingredient idea, weak raw version",
+    hook: "Show banana or honey directly on skin.",
+    reveal: "Say: “The idea makes sense. The raw version is the weak part.”",
+    proof: "Position MUMUKI as the BDRN + collagen ampoule version of that idea."
+  },
+  {
+    title: "Ingredient story hooks. Glow sells.",
+    hook: "Start close with dropper texture.",
+    reveal: "Say: “BDRN is Honey Banana PDRN + collagen.”",
+    proof: "End on plumper-looking skin, firmer-looking skin, or glass glow."
+  }
+];
+
 function route() {
   const hash = window.location.hash || "#/";
   const path = hash.replace(/^#/, "");
@@ -341,16 +362,16 @@ function renderScriptIdea() {
           <h1>Script Idea</h1>
         </div>
         <p class="small-note">
-          Skeletons first. Scripts second.
+          Pick one angle. Do not mix everything.
         </p>
       </div>
 
-      ${scriptSkeletonCard(lanceSkitSkeleton)}
+      ${scriptCreatorPlaybook(lanceSkitSkeleton)}
     </section>
   `;
 }
 
-function scriptSkeletonCard(item) {
+function scriptCreatorPlaybook(item) {
   return `
     <article class="script-skeleton-card">
       <div class="script-reference-panel">
@@ -366,43 +387,64 @@ function scriptSkeletonCard(item) {
 
       <div class="script-breakdown">
         <div class="script-summary">
-          <p class="eyebrow">Skeleton</p>
-          <h2>${item.title}</h2>
-          <p>${item.thesis}</p>
-          <p><strong>${item.coreMechanic}</strong></p>
+          <p class="eyebrow">Creator version</p>
+          <h2>One video. One angle.</h2>
+          <p>Make the old solution look weak. Reveal MUMUKI. Show the finish.</p>
         </div>
 
         <section class="script-section">
           <div class="section-head">
-            <p class="eyebrow">Original order</p>
-            <strong>${item.skeleton.length} beats</strong>
+            <p class="eyebrow">Controlled angles</p>
+            <strong>3 options only</strong>
           </div>
-          <div class="beat-list">
-            ${item.skeleton.map((beat, index) => skeletonBeat(beat, index)).join("")}
+          <div class="creator-angle-grid">
+            ${creatorScriptAngles.map((angle, index) => creatorAngleCard(angle, index)).join("")}
           </div>
         </section>
 
-        <section class="script-section">
+        <section class="script-section script-do-not">
           <div class="section-head">
-            <p class="eyebrow">Slot map</p>
-            <strong>MUMUKI replaceable parts</strong>
+            <p class="eyebrow">Keep it simple</p>
+            <strong>Do not add more angles</strong>
           </div>
           <div class="slot-map-list">
-            ${item.slotMap.map((slot) => slotMapRow(slot)).join("")}
+            <div class="slot-map-row">
+              <strong>Do not</strong>
+              <p>Turn this into a long ingredient science video.</p>
+            </div>
+            <div class="slot-map-row">
+              <strong>Do not</strong>
+              <p>Talk about every benefit in one script.</p>
+            </div>
+            <div class="slot-map-row">
+              <strong>Do</strong>
+              <p>Pick one: raw banana is not skincare, raw ingredient is weak, or show the glow.</p>
+            </div>
           </div>
-        </section>
-
-        <section class="script-section">
-          <div class="section-head">
-            <p class="eyebrow">Based on this skeleton</p>
-            <strong>First MUMUKI direction</strong>
-          </div>
-          <ol class="direction-list">
-            ${item.mumukiDirection.map((line) => `<li>${line}</li>`).join("")}
-          </ol>
         </section>
       </div>
     </article>
+  `;
+}
+
+function creatorAngleCard(angle, index) {
+  return `
+    <div class="creator-angle-card">
+      <div class="angle-number">${String(index + 1).padStart(2, "0")}</div>
+      <h3>${angle.title}</h3>
+      <div class="angle-line">
+        <strong>Hook</strong>
+        <p>${angle.hook}</p>
+      </div>
+      <div class="angle-line">
+        <strong>Reveal</strong>
+        <p>${angle.reveal}</p>
+      </div>
+      <div class="angle-line">
+        <strong>Proof</strong>
+        <p>${angle.proof}</p>
+      </div>
+    </div>
   `;
 }
 
