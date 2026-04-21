@@ -2,8 +2,8 @@ window.visualHookGroupsData = [
   {
     "id": "banana-peel-rub",
     "title": "Banana Peel Rub",
-    "label": "直接擦脸",
-    "why": "最容易迁移成 MUMUKI 的 ampoule application：同样是食材成分，但从香蕉皮擦脸切到安瓶涂脸。",
+    "label": "Direct face rub",
+    "why": "The easiest pattern to translate into MUMUKI ampoule application: same food-ingredient idea, but shifted from banana peel on skin to ampoule on skin.",
     "items": [
       {
         "id": "7355150760293747998-016",
@@ -130,8 +130,8 @@ window.visualHookGroupsData = [
   {
     "id": "banana-face-mask",
     "title": "Banana Face Mask / Patches",
-    "label": "香蕉贴脸",
-    "why": "强 weird visual。适合做“你不会每天这样做，所以用这个”的开头。",
+    "label": "Banana on face",
+    "why": "Strong weird visual. Useful for a hook built around: you would not do this every day, so use this instead.",
     "items": [
       {
         "id": "7427159569874390315-021",
@@ -183,8 +183,8 @@ window.visualHookGroupsData = [
   {
     "id": "honey-drip-texture",
     "title": "Honey Drip Texture",
-    "label": "蜂蜜拉丝/滴落",
-    "why": "蜂蜜本身有停留力：慢、黏、亮、拉丝。适合做开头的 texture pattern interrupt。",
+    "label": "Honey drip / stretch",
+    "why": "Honey has natural stop-power: slow, sticky, shiny, and stretchy. Useful as a texture pattern interrupt in the opening.",
     "items": [
       {
         "id": "7446093862952815918-026",
@@ -401,8 +401,8 @@ window.visualHookGroupsData = [
   {
     "id": "frozen-banana-tool",
     "title": "Frozen Banana Tool",
-    "label": "香蕉当工具",
-    "why": "不是普通护肤动作，而是把香蕉当成脸部按摩工具，适合做强停顿的 skit 开头。",
+    "label": "Banana as tool",
+    "why": "Not a normal skincare action. The banana becomes a face-massage tool, which makes it useful for a strong skit opening.",
     "items": [
       {
         "id": "7621189679148272928-079",
@@ -469,8 +469,8 @@ window.visualHookGroupsData = [
   {
     "id": "before-after-proof",
     "title": "Before / After Proof",
-    "label": "对比证明",
-    "why": "直接给 viewer 一个结果方向，比单纯涂抹更像 proof。",
+    "label": "Comparison proof",
+    "why": "Gives the viewer a result direction immediately. It feels more like proof than a simple application shot.",
     "items": [
       {
         "id": "7555933284388146454-046",
